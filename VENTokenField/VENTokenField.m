@@ -115,6 +115,8 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
 
 - (void)reloadData
 {
+    self.inputTextField.returnKeyType = UIReturnKeyDone;
+    [self.inputTextField reloadInputViews];
     [self layoutTokensAndInputWithFrameAdjustment:YES];
 }
 
@@ -549,7 +551,9 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
 - (BOOL)textFieldShouldReturn:(UITextField *)textField
 {
     if ([self.delegate respondsToSelector:@selector(tokenField:didEnterText:)]) {
-        [self.delegate tokenField:self didEnterText:textField.text];
+        if ([textField.text length]) {
+            [self.delegate tokenField:self didEnterText:textField.text];
+        }
     }
     
     return NO;
@@ -566,6 +570,11 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
 {
     [self unhighlightAllTokens];
     NSString *newString = [textField.text stringByReplacingCharactersInRange:range withString:string];
+    if (newString.length) {
+        textField.returnKeyType = UIReturnKeyDefault;
+        [textField reloadInputViews];
+    }
+    
     for (NSString *delimiter in self.delimiters) {
         if (newString.length > delimiter.length &&
             [[newString substringFromIndex:newString.length - delimiter.length] isEqualToString:delimiter]) {
@@ -601,6 +610,12 @@ static const CGFloat VENTokenFieldDefaultMaxHeight          = 150.0;
         }
         [self setCursorVisibility];
     }
+}
+
+- (void)textFieldDidEnterBackspaceWithOneCharacterLeft:(VENBackspaceTextField *)textField
+{
+    textField.returnKeyType = UIReturnKeyDone;
+    [textField reloadInputViews];
 }
 
 @end

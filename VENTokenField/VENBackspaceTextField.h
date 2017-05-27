@@ -28,6 +28,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @protocol VENBackspaceTextFieldDelegate <UITextFieldDelegate>
 - (void)textFieldDidEnterBackspace:(VENBackspaceTextField *)textField;
+- (void)textFieldDidEnterBackspaceWithOneCharacterLeft:(VENBackspaceTextField *)textField;
 @end
 
 

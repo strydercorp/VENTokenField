@@ -31,7 +31,12 @@
             [self.backspaceDelegate textFieldDidEnterBackspace:self];
         }
     }
-
+    else if (self.text.length == 1) {
+        if ([self.backspaceDelegate respondsToSelector:@selector(textFieldDidEnterBackspaceWithOneCharacterLeft:)]) {
+            [self.backspaceDelegate textFieldDidEnterBackspaceWithOneCharacterLeft:self];
+        }
+    }
+    
     return YES;
 }
 
